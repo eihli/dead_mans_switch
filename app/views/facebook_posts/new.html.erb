@@ -1,0 +1,8 @@
+<h1>Post to facebook</h1>
+
+
+<%= form_for @facebook_post do |f| %>
+  <%= f.label :message %>:
+  <%= f.text_field :message %>
+  <%= f.submit %>
+<% end %>

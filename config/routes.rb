@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+  get 'facebook_posts', to: 'facebook_posts#show'
+  get 'facebook_posts/new', to: 'facebook_posts#new'
+  post 'facebook_posts', to: 'facebook_posts#create'
+
+  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/failure', to: redirect('/')
+  get 'signout', to: 'sessions#destroy', as: 'signout'
+
+  resources :sessions, only: [:create, :destroy]
+  resources :home, only: [:show]
+
+  resources :auctions do
+    resources :bids do
+      get :manage, on: :collection
+    end
+  end
+  root to: "home#show"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -18,7 +35,7 @@ Rails.application.routes.draw do
   #   resources :products do
   #     member do
   #       get 'short'
-  #       post 'toggle'
+  #       create 'toggle'
   #     end
   #
   #     collection do
@@ -42,7 +59,7 @@ Rails.application.routes.draw do
 
   # Example resource route with concerns:
   #   concern :toggleable do
-  #     post 'toggle'
+  #     create 'toggle'
   #   end
   #   resources :posts, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
